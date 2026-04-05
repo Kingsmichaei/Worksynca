@@ -24,6 +24,7 @@ from .facial_recognition import FacialRecognitionEngine
 import json
 import numpy as np    
 from openpyxl import Workbook
+from django.contrib import messages
 
 
 
@@ -36,20 +37,22 @@ def login_view(request):
     if request.method == "POST":
         username = request.POST['username']
         password = request.POST['password']
-
         user = authenticate(request, username=username, password=password)
-        if user:
+
+        if user is not None:
+          if user.is_active:
             login(request, user)
             return redirect('dashboard')
+          else:
+            
+             messages.error(request,'Your account is inactive. Contact your Admin')
+             return redirect('login')
         else:
-            return render(request, 'attendance/login.html', 
-             { 'error': 'Invalid credentials',
-                'show_create': User.objects.count() == 0
-            })
+             messages.error(request,'Invalid username or password')
+             return redirect('login')
 
-    return render(request, 'attendance/login.html', {
-        'show_create': User.objects.count() == 0
-    })
+    return render(request, 'attendance/login.html')
+
 
 
 

@@ -22,7 +22,21 @@
                 <br><br>
                 <label for="password">Password</label>
                 <input type="password" name="password" placeholder="password" required>
-                <br><br>
+                <br>
+                {% if messages %}
+    {% for message in messages %}
+        <div style="
+            background-color: #ffffff;
+            color: #b10b0b;
+            padding: 10px 50px;
+            margin-top: 3px;
+            font-size: 14px;  
+        ">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+                <br>
 
                 <button class="btn-small" type="submit">Login</button> 
                 <div class="login-actions">
